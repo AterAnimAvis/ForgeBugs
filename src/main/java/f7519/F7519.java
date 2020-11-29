@@ -1,52 +1,55 @@
-package com.example.examplemod;
+package f7519;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod("create-entity-on-load")
-public class ExampleMod
+public class F7519
 {
-    // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ExampleMod() {
+    public F7519() {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if (event.getWorld().isRemote) return;
+
         Entity entity = event.getEntity();
         if (entity.hasNoGravity()) return;
         if (!entity.getClass().equals(ItemEntity.class)) return;
 
-        LOGGER.warn("<<< Adding New Entity");
+        AtomicBoolean finished = new AtomicBoolean(false);
+        Thread watchdog = new Thread(() -> {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ignored) {}
+            if (!finished.get()) {
+                LOGGER.error("...[Forge7519] Deadlocked for EntityJoinWorldEvent at " + new ChunkPos(entity.getPosition()));
+            }
+        });
+        watchdog.setDaemon(true);
+        watchdog.start();
+
         ItemStack stack = ((ItemEntity)entity).getItem();
         ItemEntity item = new ItemEntity(event.getWorld(), entity.getPosX(), entity.getPosY(), entity.getPosZ(), stack);
+        item.setMotion(entity.getMotion());
         item.setNoGravity(true);
         item.setPickupDelay(20);
         event.getWorld().addEntity(item);
-        LOGGER.warn("<<< Finished Adding New Entity");
+        finished.set(true);
     }
 
 }
