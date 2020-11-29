@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "f7519.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "examplemod.refmap.json",
+  "mixins": [
+    "ChunkManagerMixin"
+  ],
+  "client":[
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
