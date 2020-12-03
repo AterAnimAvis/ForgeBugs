@@ -17,7 +17,7 @@ public class F7519Fix {
 
     public static final boolean ENABLED = Boolean.parseBoolean(System.getProperty("forge.bug7519.fix", "true"));
 
-    public static final boolean TRIGGER = Boolean.parseBoolean(System.getProperty("forge.bug7519.trigger", "true"));
+    public static final boolean TRIGGER = Boolean.parseBoolean(System.getProperty("forge.bug7519.trigger", "false"));
 
     public static void optionallyApplyFix(ChunkManager manager, ChunkHolder holder, Chunk chunk, ServerWorld world) {
         if (ENABLED) holder.func_219276_a(ChunkStatus.FULL, manager).thenRun(() -> finishLoadingChunk(chunk, world));

@@ -2,7 +2,7 @@
   "required": true,
   "package": "f7519.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "examplemod.refmap.json",
+  "refmap": "f7519.refmap.json",
   "mixins": [
     "ChunkManagerMixin"
   ],
