@@ -3,9 +3,11 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -14,8 +16,9 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '1.0'
-group = 'com.yourname.modid'
-archivesBaseName = 'modid'
+group = 'ateranimavis.controller_fix'
+archivesBaseName = 'controller-fix'
+apply plugin: 'org.spongepowered.mixin'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -29,6 +32,8 @@ minecraft {
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'mixin.env.disableRefMap', 'true'
+            arg "-mixin.config=controller-fix.mixins.json".toString()
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
@@ -93,9 +98,14 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"examplemodsareus",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs"            : "controller-fix.mixins.json"
         ])
     }
+}
+
+mixin {
+    add sourceSets.main, "controller-fix.refmap.json"
 }
 
 jar.finalizedBy('reobfJar')

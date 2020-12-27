@@ -2,9 +2,9 @@ modLoader="javafml"
 loaderVersion="[35,)"
 license="All rights reserved"
 [[mods]]
-modId="examplemod"
+modId="controller-fix"
 version="${file.jarVersion}"
-displayName="Example Mod"
+displayName="Controller Fix"
 description='''
-This mod [demonstrates|fixes] MinecraftForge/MinecraftForge#
+This mod potentially fixes MinecraftForge/MinecraftForge#7285
 '''
