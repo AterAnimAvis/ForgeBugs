@@ -16,13 +16,15 @@ import org.apache.logging.log4j.Logger;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Mod("create-entity-on-load")
+@Mod("f7519")
 public class F7519
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random random = new Random();
 
     public F7519() {
+        LOGGER.info("[Forge7519] Running Forge7519 (Trigger={},Fix={})", F7519Fix.TRIGGER, F7519Fix.ENABLED);
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -41,7 +43,7 @@ public class F7519
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {}
             if (!finished.get()) {
-                LOGGER.error("...[Forge7519] Deadlocked for EntityJoinWorldEvent at " + new ChunkPos(entity.getPosition()));
+                LOGGER.error("[Forge7519] Deadlocked for EntityJoinWorldEvent at " + new ChunkPos(entity.getPosition()));
             }
         });
         watchdog.setDaemon(true);

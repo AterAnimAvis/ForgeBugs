@@ -1,8 +1,8 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[33,)"
 license="MIT / LGPL 2.1"
 [[mods]]
-modId="create-entity-on-load"
+modId="f7519"
 version="${file.jarVersion}"
 displayName="Test Mod for Forge#7519"
 description="Test Mod for Forge#7519"

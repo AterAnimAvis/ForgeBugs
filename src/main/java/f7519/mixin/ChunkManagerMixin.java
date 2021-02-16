@@ -49,13 +49,12 @@ public class ChunkManagerMixin {
                 chunk.postLoad();
                 if (loadedPositions.add(chunkpos.asLong())) {
                     chunk.setLoaded(true);
-                    world.addTileEntities(chunk.getTileEntityMap().values());
                     F7519Fix.optionallyApplyFix((ChunkManager) (Object) this, holder, chunk, world);
                 }
 
                 return chunk;
             });
-        }, (r) -> this.field_219265_s/*mainThreadMailbox*/.enqueue(ChunkTaskPriorityQueueSorter.func_219069_a(r, holder.getPosition().asLong(), holder::getChunkLevel)));
+        }, (r) -> this.field_219265_s/*mainThreadMailbox*/.enqueue(ChunkTaskPriorityQueueSorter.func_219069_a/*message*/(r, holder.getPosition().asLong(), holder::getChunkLevel)));
     }
 
 }
