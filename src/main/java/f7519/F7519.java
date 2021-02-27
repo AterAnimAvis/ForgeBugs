@@ -1,5 +1,13 @@
 package f7519;
 
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiPredicate;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -9,12 +17,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 @Mod("f7519")
 public class F7519
@@ -26,6 +32,10 @@ public class F7519
         LOGGER.info("[Forge7519] Running Forge7519 (Trigger={},Fix={})", F7519Fix.TRIGGER, F7519Fix.ENABLED);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        Supplier<String> SERVER_ONLY = () -> FMLNetworkConstants.IGNORESERVERONLY;
+        BiPredicate<String, Boolean> ALWAYS = (s, b) -> true;
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, ()->Pair.of(SERVER_ONLY, ALWAYS));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
