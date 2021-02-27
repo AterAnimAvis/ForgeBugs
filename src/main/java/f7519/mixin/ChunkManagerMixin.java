@@ -30,7 +30,7 @@ public class ChunkManagerMixin {
      * @author AterAnimAvis
      */
     @Overwrite
-    private CompletableFuture<Either<IChunk, ChunkHolder.IChunkLoadingError>> func_219200_b(ChunkHolder holder) {
+    public CompletableFuture<Either<IChunk, ChunkHolder.IChunkLoadingError>> func_219200_b(ChunkHolder holder) {
         CompletableFuture<Either<IChunk, ChunkHolder.IChunkLoadingError>> future = holder.func_219301_a/*getFutureIfPresentUnchecked*/(ChunkStatus.FULL.getParent());
         return future.thenApplyAsync((either) -> {
             ChunkStatus status = ChunkHolder.getChunkStatusFromLevel(holder.getChunkLevel());
